@@ -1,0 +1,23 @@
+{
+  "name": "189",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.15.2",
+    "cookie-parser": "~1.4.3",
+    "crypto-js": "^3.1.9-1",
+    "debug": "~2.2.0",
+    "ejs": "~2.5.2",
+    "express": "~4.14.0",
+    "express-session": "^1.15.1",
+    "moment": "^2.17.1",
+    "morgan": "~1.7.0",
+    "serve-favicon": "~2.3.0",
+    "session-file-store": "^1.0.0",
+    "superagent": "^3.4.3",
+    "xml2js": "^0.4.17"
+  }
+}

@@ -1,0 +1,10 @@
+{
+    "port": 3000,
+    "appKey": "",
+    "appSecret": "",
+    "callbackUrl": "http://localhost:3000/admin/authCallback",
+    "accessToken": "",
+    "linkCache": true,
+    "linkCacheTime": 3600,
+    "defaultFolder": -1
+}

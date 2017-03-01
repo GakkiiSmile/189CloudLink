@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        <%if(title != 'admin'){%>
+            <%=title%>
+        <%}else{%>
+            189云管理平台
+        <%}%>
+    </title>
+    <link rel="stylesheet" href="./public/css/zui.min.css">
+    <link rel="stylesheet" href="./public/css/zui-theme.css">
+    <%if(title != 'admin'){%>
+        <link rel="stylesheet" href="./public/css/style.css">
+    <%}else{%>
+        <link rel="stylesheet" href="./public/css/admin.css">
+    <%}%>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//cdn.bootcss.com/react/0.14.4/react.min.js"></script>
+    <script src="./public/js/zui.js"></script>
+    <script src="//cdn.bootcss.com/react/0.14.0-beta3/JSXTransformer.js"></script>
+</head>
+
+<body>
+<% if(title != 'admin'){%>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-check">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand">Gakki 云</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-check">
+                <ul class="nav navbar-nav">
+                    <li <%if(title == '首页'){%>class="active"<%}%>><a href="/">首页</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <% if(!isLogined){ %>
+                    <li <%if(title == '登录'){%>class="active"<%}%>><a href="/login">登录</a></li>
+                    <li <%if(title == '注册'){%>class="active"<%}%>><a href="/reg">注册</a></li>
+                    <%}else{%>
+                    <li class="disabled"><a href="#">欢迎，<%=name%></a></li>
+                    <li><a href="/admin">管理</a></li>
+                    <li><a href="/logout">退出登录</a></li>
+                    <%}%>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<%}%>

@@ -1,0 +1,97 @@
+<% include head.html %>
+<div class="container">
+	<div class="col-sm-offset-2 col-sm-8 ">
+	    <div class="panel panel-primary">
+	        <div class="panel-heading text-center">
+	            用户登入
+	        </div>
+	        <div class="panel-body" id="login"></div>
+	    </div>
+    </div>
+</div>
+<script type="text/jsx">
+	var LoginApp = React.createClass({
+		getInitialState: function() {
+	        return {
+	            ret_code: 2,
+	            ret_msg: '',
+	            isLoading: false,//是否在加载
+	            isError: false,//是否出现错误
+	        };
+	    },
+		loginHandle: function(){
+			var username = this.refs.userName.value;
+			var password = this.refs.passWord.value;
+			this.setState({isLoading: true,isError: false});
+			$.post('/login',{
+				username: username,
+				password: password
+			},function(data){
+				this.setState({isLoading: false});
+				if(data.ret_code === 2){
+	                this.setState({ret_code: 2,ret_msg: '登录失败!',isError: true});
+	                return;
+	            }
+	            if(data.ret_code === 1){
+	                this.setState({ret_code: 1,ret_msg: '账号或密码错误!',isError: true});
+	                return;
+	            }
+	            if(data.ret_code === 0){
+	                this.setState({ret_code: 0,ret_msg: '登录成功!',isError: false});
+	                setTimeout(function(){
+	                	location.href= './'
+	                },1500);
+	                return;
+	            }
+			}.bind(this));
+		},
+		render: function(){
+			return(
+				<div>
+					<div className="alert alert-info with-icon" style={this.state.isLoading ? {display: 'block'} : {display: 'none'} }>
+	                  <i className="icon icon-spin icon-refresh"></i>
+	                  <h2 className="content">正在加载</h2>
+	                </div>
+	                <div className="alert alert-warning with-icon" style={this.state.isError ? {display: 'block'} : {display: 'none'} }>
+	                  <i className="icon-frown"></i>
+	                  <h2 className="content"><strong>提示：</strong>{this.state.ret_msg}</h2>
+	                </div>
+	                <div className="alert alert-success with-icon" style={this.state.ret_code === 0 ? {display: 'block'} : {display: 'none'} }>
+	                  <i className="icon-ok-sign"></i>
+	                  <h2 className="content"><strong>提示：</strong>{this.state.ret_msg}，2秒后自动跳转！</h2>
+	                </div>
+					<form action="/login" className="form-horizontal" method="post">
+						<div className="form-group">
+							<label for="username" className="control-label col-md-4 col-sm-2">用户名</label>
+							<div className="col-md-6 col-sm-8">
+								<input type="text" ref="userName" className="form-control" id="username" name="username" placeholder="电子邮件/用户名" />
+							</div>
+						</div>
+						<div className="form-group">
+							<label for="password" className="control-label col-md-4 col-sm-2">口令</label>
+							<div className="col-md-6 col-sm-8">
+								<input type="password" ref="passWord" className="form-control" id="password" name="password" placeholder="口令"/>
+							</div>
+						</div>
+						<div className="form-group">
+						    <div className="col-md-offset-4 col-sm-offset-2 col-sm-8">
+						      <div className="checkbox">
+						        <label>
+						          <input type="checkbox"/> 记住我
+						        </label>
+						      </div>
+						    </div>
+						  </div>
+						<div className="form-group">
+							<div className="col-md-offset-4 col-sm-offset-2 col-sm-8">
+								<button type="button" className="btn btn-primary" id="login_button" onClick={this.loginHandle}>登入</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			)
+		}
+	});
+	React.render(<LoginApp />, document.getElementById('login'));
+	</script>
+<% include foot.html %>

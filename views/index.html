@@ -1,0 +1,27 @@
+<% include head.html %>
+    <div class="container center-block">
+        <div class="col-sm-offset-2 col-sm-8 ">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    欢迎来到Gakki云平台
+                </div>
+                <div class="panel-body">
+                    <p style="color: green;font-weight:bold;">Gakki云是一个基于Nodejs的天翼云直链解析平台</p>
+                    <p style="color: red;font-weight:bold;">特别提醒本平台不是网盘，只负责189直链解析，并且文件只存在于189网盘。</p>
+                    <p style="color: green;font-weight:bold;">不提供任何上传服务，因此不负责任何文件法律责任。</p>
+                    <p style="color: red;font-weight:bold;">另外本平台提供天翼云平台的<a href="#">php源码</a>。仅供学习交流，切勿用于非法用途！</p>
+                    <%if(!isLogined){%>
+                    <p>
+                        <a href="/login" class="btn btn-primary btn-lg">登录</a>
+                        <a href="/reg" class="btn btn-lg">立即注册</a>
+                    </p>
+                    <%}else{%>
+                    <p>
+                        <a href="/admin" class="btn btn-primary btn-lg">立即进入管理页面</a>
+                    </p>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+    </div>
+<% include foot.html %>

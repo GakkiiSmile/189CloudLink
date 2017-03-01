@@ -1,0 +1,90 @@
+<% include head.html %>
+    <header class="header">
+        <div class="header-left">
+            <div class="sidebar-toggle"><i class="icon icon-bars"></i></div>
+            <div class="logo">G-<span class="text-primary">admin</span></div>
+        </div>
+        <div class="header-user">
+            <div class="item dropdown">
+                <span data-toggle="dropdown">
+                    <i class="icon icon-user"></i>
+                    <span><%=name%></span>
+                    <span class="caret"></span>
+                </span>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="#">修改资料（暂时没做）</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="/logout">退出</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <div class="main">
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <div class="item">
+                    <a href="/">
+                        <i class="icon icon-desktop"></i>
+                        <span>回到首页</span>
+                    </a>
+                </div>
+                <div <% if(!!authUrl){%>class="item active"<%}else{%>class="item"<%}%>>
+                    <a href="/admin/auth">
+                        <i class="icon icon-dashboard"></i>
+                        <span>获取授权</span>
+                    </a>
+                </div>
+                <div <% if(!!authUrl){%>class="item"<%}else{%>class="item active"<%}%>>
+                    <a href="/admin">
+                        <i class="icon icon-cloud-download"></i>
+                        <span>直链管理</span>
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="http://cloud.189.cn/main.action" target="_blank">
+                        <i class="icon icon-cloud"></i>
+                        <span>天翼云资源管理</span>
+                    </a>
+                </div>
+                <div class="item vertical">
+                    <a href="#">
+                        <i class="icon icon-flag"></i>
+                        <span>其他</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <div class="vertical-menu">
+                        <a href="http://www.ikoumi.com/pan/" target="_blank">微云直链</a>
+                        <a href="http://pan.plyz.net/" target="_blank">度盘直链</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div class="main-content">
+            <div class="wrapper">
+                <div class="panel">
+                <%if(!!authUrl){%>
+                    <div class="panel-heading">
+                        <h5>登录获取授权码</h5>
+                    </div>
+                    <div class="panel-body text-center">
+                        <a href='<%=authUrl%>' class="btn btn-primary">授权</a>
+                    </div>
+                <%}else{%>
+                        <div class="panel-heading">
+                        <h5>直链管理</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div id="app" class="container"></div>
+                    </div>
+                    <script type="text/jsx" src='./public/js/app.js'></script>
+                <%}%>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="./public/js/admin.js"></script>
+<% include foot.html %>
