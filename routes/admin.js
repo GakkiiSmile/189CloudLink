@@ -78,14 +78,14 @@ router.use((req, res, next) => {
     req.getCache = (key) => {
             return Cache[key] ? Cache[key] : null;
         }
-        next()
+    next();
 });
 
 
 router.get('/', function(req, res, next) {
-    let sess = req.session;
-    let loginUser = sess.loginUser;
-    let isLogined = !!loginUser;
+    var sess = req.session;
+    var loginUser = sess.loginUser;
+    var isLogined = !!loginUser;
     if(!isLogined){
         res.render('error', {
             title: '你好像没登录哎:-(',
@@ -105,9 +105,9 @@ router.get('/', function(req, res, next) {
 
 // OAuth 重定向
 router.get('/auth', (req, res, next) => {
-    let sess = req.session;
-    let loginUser = sess.loginUser;
-    let isLogined = !!loginUser;
+    var sess = req.session;
+    var loginUser = sess.loginUser;
+    var isLogined = !!loginUser;
     var timestamp = moment().unix();
     var appSignature = CryptoJS.HmacSHA1(`appKey=${req.config.appKey}&timestamp=${timestamp}`, req.config.appSecret);
     var args = `appKey=${req.config.appKey}&appSignature=${appSignature}&callbackUrl=${req.config.callbackUrl}&responseType=code&timestamp=${timestamp}`;
@@ -131,9 +131,9 @@ router.get('/auth', (req, res, next) => {
 
 // OAuth 回调
 router.get('/authCallback\&code\=:codeId', (req, res) => {
-    let sess = req.session;
-    let loginUser = sess.loginUser;
-    let isLogined = !!loginUser;
+    var sess = req.session;
+    var loginUser = sess.loginUser;
+    var isLogined = !!loginUser;
     if(!isLogined){
         res.render('error', {
             title: '你好像没登录哎:-(',
@@ -164,7 +164,7 @@ router.get('/authCallback\&code\=:codeId', (req, res) => {
 });
 
 
-router.get('/link/:fileId', (req, res) => {
+router.get('/link/:fileId/*', (req, res) => {
     var fileId = req.params.fileId;
     var cache = req.getCache(fileId);
     if (cache) {
@@ -201,9 +201,9 @@ router.get('/link/:fileId', (req, res) => {
 // });
 
 router.get('/folder/', (req, res) => {
-    let sess = req.session;
-    let loginUser = sess.loginUser;
-    let isLogined = !!loginUser;
+    var sess = req.session;
+    var loginUser = sess.loginUser;
+    var isLogined = !!loginUser;
     if(!isLogined){
         res.render('error', {
             title: '你好像没登录哎:-(',
@@ -232,9 +232,9 @@ router.get('/folder/', (req, res) => {
 });
 
 router.get('/folder/:folderId', (req, res) => {
-    let sess = req.session;
-    let loginUser = sess.loginUser;
-    let isLogined = !!loginUser;
+    var sess = req.session;
+    var loginUser = sess.loginUser;
+    var isLogined = !!loginUser;
     if(!isLogined){
         res.render('error', {
             title: '你好像没登录哎:-(',
@@ -260,9 +260,9 @@ router.get('/folder/:folderId', (req, res) => {
 });
 
 router.post('/search/', (req, res) => {
-    let sess = req.session;
-    let loginUser = sess.loginUser;
-    let isLogined = !!loginUser;
+    var sess = req.session;
+    var loginUser = sess.loginUser;
+    var isLogined = !!loginUser;
     if(!isLogined){
         res.render('error', {
             title: '你好像没登录哎:-(',
