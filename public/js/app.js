@@ -11,7 +11,7 @@ var CloudLink = React.createClass({
             totalNum:'',//总记录数
             totalData:{},//取得的全部数据
             current: 1, //当前页码
-            pageSize:5, //每页显示的条数5条
+            pageSize:8, //每页显示的条数5条
             goValue:'',
             totalPage:'',//总页数
         };
@@ -145,9 +145,6 @@ var CloudLink = React.createClass({
                 <table className="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
-                            <th className="text-center">
-                                <input type="checkbox" name="checkbox" />
-                            </th>
                             <th><span style={{float:'left'}}>文件 / 目录名</span></th>
                             <th className="hidden-xs"><span style={{float:'left'}}>文件 / 目录ID</span></th>
                             <th className="hidden-xs"><span style={{float:'left'}}>创建日期</span></th>
@@ -162,15 +159,14 @@ var CloudLink = React.createClass({
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th className="text-center">
-                                <input type="checkbox" name="checkbox" />
+                            <th colSpan="4">
+                               <GetLink currentList={this.state.filesList} currentFloderList={this.state.totalData} isLoading={this.state.isLoading}/>
                             </th>
-                            <th colSpan="2">
-                                <button type="button" className="btn btn-danger"><i className="icon-trash"></i> 删除</button>
-                            </th>
-                            <th colSpan="3">
+                            <th colSpan="1">
                                <div className="pull-right">
-                                    <button type="button" onClick={this.load} className={this.state.isLoading ? 'btn btn-danger disabled' : 'btn btn-success'}><i className="icon-refresh"></i> 重新加载</button>
+                                    <button type="button" onClick={this.load} className={this.state.isLoading ? 'btn btn-danger disabled' : 'btn btn-success'}>
+                                        <i className="icon-refresh"></i> 重新加载
+                                    </button>
                                 </div>
                             </th>
                         </tr>
@@ -192,7 +188,7 @@ var CloudLink = React.createClass({
                     </tfoot>
                 </table>
             </div>
-            : 
+            :
             <div className="container">
                 <div className="alert alert-danger with-icon">
                     <i className="icon-remove-sign"></i>
@@ -280,9 +276,6 @@ var TableItem = React.createClass({
     render: function() {
         return (
             <tr>
-                    <th className="text-center">
-                        <input type="checkbox" name="checkbox" />
-                    </th>
                 {
                     this.props.item.folder ?
                         <td className="word-break"><a href="javascript:void(0);" onClick={this.props.toFolder.bind(this, this.props.item.id, this.props.item.name)}>{this.props.item.name + '/'}</a></td>
@@ -302,7 +295,7 @@ var TableItem = React.createClass({
                         <td><a href="#" className="btn disabled"><i className="icon-download"></i> 下载</a></td>
                     :
                         <td>
-                        <a href={this.props.item.folder ? this.props.item.id : window.location.protocol + '//' + document.domain + (location.port ? ':' + location.port : '') + '/admin/link/' + this.props.item.id} className="btn btn-primary" target="_blank"><i className="icon-download"></i> 下载</a>&nbsp;
+                        <a href={this.props.item.folder ? this.props.item.id : window.location.protocol + '//' + document.domain + (location.port ? ':' + location.port : '') + '/admin/link/' + this.props.item.id + '/' + this.props.item.name} className="btn btn-primary" target="_blank"><i className="icon-download"></i> 下载</a>&nbsp;
                         {
                             this.props.item.icon ?
                                  <a data-toggle="modal" href={this.props.item.icon[0].largeUrl[0]} data-target={'#'+this.props.item.id} className="btn btn-primary"><i className="icon-picture"></i> 预览图片</a>
@@ -320,6 +313,90 @@ var TableItem = React.createClass({
                         }
                         </td>
                 }
+            </tr>
+        )
+    }
+});
+
+var GetLink = React.createClass({
+    getInitialState: function() {
+        return {
+            getData: []
+        };
+    },
+    getCurrentFloderList: function(){
+        var temp = [];
+        if(this.props.currentFloderList != undefined)
+            this.props.currentFloderList.map(function(filesItem){
+            if(filesItem.folder == false) temp.push({
+                id: filesItem.id,
+                name: filesItem.name,
+                md5: filesItem.md5
+            });
+        });
+        this.setState({getData:temp});
+    },
+    getCurrentList:function(){
+        var temp = [];
+        if(this.props.currentList != undefined)
+            this.props.currentList.map(function(filesItem){
+            if(filesItem.folder == false) temp.push({
+                id: filesItem.id,
+                name: filesItem.name,
+                md5: filesItem.md5
+            });
+        });
+        this.setState({getData:temp});
+    },
+    render: function(){
+        return (
+            <div>
+                批量获取:
+                <button className={this.props.isLoading ? 'btn btn-info disabled' : 'btn btn-info'} type="button" onClick={this.getCurrentFloderList} data-toggle="modal" data-target="#GetLink">当前目录</button>
+             &nbsp;<button className={this.props.isLoading ? 'btn btn-warning disabled' : 'btn btn-warning'} type="button" onClick={this.getCurrentList} data-toggle="modal" data-target="#GetLink">当前页</button>
+                <div className="modal fade" id="GetLink">
+                  <div className="modal-dialog modal-lg">
+                    <div className="modal-header">
+                        <button type="button" className="close" data-dismiss="modal"><span aria-hidden="true">×</span><span className="sr-only">关闭</span></button>
+                        <h4 className="modal-title">链接如下</h4>
+                    </div>
+                    <div className="modal-body">
+                        <table className="table table-bordered table-hover table-striped">
+                          <thead>
+                              <tr>
+                                  <th><span style={{float:'left'}}>文件名</span></th>
+                                  <th><span style={{float:'left'}}>MD5</span></th>
+                                  <th><span style={{float:'left'}}>链接</span></th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {
+                                  this.state.getData.map(function(item){
+                                      return <ShowLink item={item} />;
+                                  })
+                              }
+                          </tbody>
+                      </table>
+                    </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-default" data-dismiss="modal">关闭</button>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        )
+    }
+});
+
+var ShowLink = React.createClass({
+    render: function(){
+        return (
+            <tr>
+                <td className="word-break">{this.props.item.name}</td>
+                <td className="word-break">{this.props.item.md5}</td>
+                <td>
+                <p className="word-break">{this.props.item.folder ? this.props.item.id : window.location.protocol + '//' + document.domain + (location.port ? ':' + location.port : '') + '/admin/link/' + this.props.item.id + '/'+ this.props.item.name}</p>
+                </td>
             </tr>
         )
     }
@@ -449,7 +526,7 @@ var ShowSearch = React.createClass({
                         <td><button className="btn btn-primary disabled"><i className="icon-download"></i> 不可操作</button></td>
                     :
                         <td>
-                        <a href={this.props.item.folder ? this.props.item.id : window.location.protocol + '//' + document.domain + (location.port ? ':' + location.port : '') + '/admin/link/' + this.props.item.id} className="btn btn-primary" target="_blank"><i className="icon-download"></i> 下载</a>
+                        <a href={this.props.item.folder ? this.props.item.id : window.location.protocol + '//' + document.domain + (location.port ? ':' + location.port : '') + '/admin/link/' + this.props.item.id + '/'+ this.props.item.name} className="btn btn-primary" target="_blank"><i className="icon-download"></i> 下载</a>
                         {
                             this.props.item.icon ?
                                  <a style={{margin: '2px 0'}} href={this.props.item.icon[0].mediumUrl[0]} className="btn btn-primary" target="_blank"><i className="icon-picture"></i> 预览图片</a>
