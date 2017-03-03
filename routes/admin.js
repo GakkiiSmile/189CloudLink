@@ -156,7 +156,9 @@ router.get('/authCallback\&code\=:codeId', (req, res) => {
         if (err) return res.status(200).send({error: '获取Accesstoken失败！'});
         req.config.accessToken = result.accessToken;
         fs.writeFile('./config.json', JSON.stringify(req.config, null, 4), 'utf8', (err) => {
-            res.send(`Save Status: ${err || '保存配置成功,三秒后自动跳转！<script language="javascript" type="text/javascript">setTimeout(function(){window.location.href="http://localhost:3000/admin";},3000);</script>'} <br>`);
+            var location = `window.location.protocol + '//' + document.domain + (location.port ? ':' + location.port : '') + '/admin'`;
+            var script = `<script language='javascript' type='text/javascript'>setTimeout(function(){var toUrl = ${location};window.location.href=toUrl;}, 3000);</script>`;
+            res.send(`Save Status: ${err || `保存配置成功！${script}`} <br>`);
             res.end();
         });
     });
