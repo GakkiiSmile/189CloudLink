@@ -24,7 +24,7 @@
 {
     "appKey": "这里写Key",
     "appSecret": "这里写Secret",
-    "callbackUrl": "这里写回调的页面",
+    "callbackUrl": "这里写回调的页面", // eg: http://localhost:3000/admin/authCallback
     "accessToken": "",
     "linkCache": true, //这个是直链缓存开关
     "linkCacheTime": 3600,//这个是缓存时间
